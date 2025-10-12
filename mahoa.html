@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>SHA-256 Test</title>
+</head>
+<body>
+<h2>Test SHA-256 (JavaScript)</h2>
+<input id="textInput" value="Thái">
+<button onclick="hashText()">Hash</button>
+<pre id="output"></pre>
+
+<script>
+async function hashText() {
+  const text = document.getElementById("textInput").value;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(text);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  document.getElementById("output").textContent = hashHex;
+}
+</script>
+</body>
+</html>
