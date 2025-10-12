@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Album bí mật</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f5f6fa;
+    text-align: center;
+    padding: 30px;
+  }
+
+  h2 {
+    color: #333;
+  }
+
+  input, button {
+    padding: 10px;
+    margin: 10px;
+    font-size: 16px;
+  }
+
+  #gallery {
+    display: none;
+    margin-top: 30px;
+  }
+
+  .album {
+    margin-bottom: 40px;
+  }
+
+  .album h3 {
+    margin-bottom: 10px;
+    color: #2c3e50;
+  }
+
+  .photo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .photo-grid img {
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    pointer-events: none; /* chống click / copy */
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+
+<h2>🔒 Nhập ngày sinh để mở album bí mật</h2>
+<input type="date" id="dob" />
+<br/>
+<button onclick="checkDOB()">Xác nhận</button>
+
+<div id="gallery">
+  <!-- Nội dung ảnh sẽ được tạo bằng JavaScript -->
+</div>
+
+<script>
+  // 🔒 Chặn chuột phải & kéo ảnh
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('dragstart', e => e.preventDefault());
+
+  // ============================
+  // 👇 Cấu hình tại đây
+  // ============================
+  const correctDOB = "2000-05-06"; // 👉 thay bằng ngày sinh thật (YYYY-MM-DD)
+
+  // Các album, mỗi mục gồm tiêu đề + danh sách URL ảnh Cloudinary
+  const albums = [
+    {
+      title: "🇹🇭 Du lịch Thái Lan",
+      photos: [
+        "https://res.cloudinary.com/demo/image/upload/v1691234567/sample.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1691234567/beautiful_beach.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1691234567/thailand_city.jpg"
+      ]
+    },
+    {
+      title: "🇻🇳 Sài Gòn",
+      photos: [
+        "https://res.cloudinary.com/demo/image/upload/v1691234567/saigon1.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1691234567/saigon2.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1691234567/saigon3.jpg"
+      ]
+    },
+    {
+      title: "🏞️ Đà Lạt",
+      photos: [
+        "https://res.cloudinary.com/demo/image/upload/v1691234567/dalat1.jpg",
+        "https://res.cloudinary.com/demo/image/upload/v1691234567/dalat2.jpg"
+      ]
+    }
+  ];
+
+  // ============================
+  // 👇 Hàm xử lý
+  // ============================
+  function checkDOB() {
+    const dob = document.getElementById("dob").value;
+
+    if (dob === correctDOB) {
+      document.getElementById("gallery").style.display = "block";
+      renderAlbums();
+    } else {
+      alert("❌ Ngày sinh không đúng!");
+    }
+  }
+
+  function renderAlbums() {
+    const container = document.getElementById("gallery");
+    container.innerHTML = ""; // Xóa trước khi render
+
+    albums.forEach(album => {
+      const section = document.createElement("div");
+      section.className = "album";
+
+      const title = document.createElement("h3");
+      title.textContent = album.title;
+
+      const grid = document.createElement("div");
+      grid.className = "photo-grid";
+
+      album.photos.forEach(url => {
+        const img = document.createElement("img");
+        img.src = url;
+        grid.appendChild(img);
+      });
+
+      section.appendChild(title);
+      section.appendChild(grid);
+      container.appendChild(section);
+    });
+  }
+</script>
+
+</body>
+</html>
