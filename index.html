@@ -3,13 +3,17 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Album</title>
+<title>Album Kỷ Niệm</title>
 <style>
   body {
     font-family: Arial, sans-serif;
     background: #f5f6fa;
     text-align: center;
     padding: 30px;
+  }
+
+  h1 {
+    color: #2c3e50;
   }
 
   h2 {
@@ -29,6 +33,7 @@
 
   .album {
     margin-bottom: 40px;
+    animation: fadeIn 1s ease-in-out;
   }
 
   .album h3 {
@@ -50,96 +55,140 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     pointer-events: none; /* chống click / copy */
     user-select: none;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+
+  .photo-grid img.visible {
+    opacity: 1;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
   }
 </style>
 </head>
 <body>
 
-<h2>🔒 Nhập ngày sinh </h2>
+<h1>🌿 Bộ Sưu Tập Kỷ Niệm</h1>
+<p>
+  Đây là nơi lưu giữ những hình ảnh đặc biệt và ý nghĩa.<br/>
+  Chỉ những người thân thiết mới có thể mở khóa và xem nội dung bên trong 💖
+</p>
+
+<h2>🔒 Đăng nhập bằng ngày sinh</h2>
 <input type="date" id="dob" />
 <br/>
 <button onclick="checkDOB()">Xác nhận</button>
 
-<div id="gallery">
-  <!-- Nội dung ảnh sẽ được tạo bằng JavaScript -->
-</div>
+<div id="gallery"></div>
 
 <script>
-  // 🔒 Chặn chuột phải & kéo ảnh
-  document.addEventListener('contextmenu', e => e.preventDefault());
-  document.addEventListener('dragstart', e => e.preventDefault());
+// 🔒 Chặn chuột phải & kéo ảnh
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('dragstart', e => e.preventDefault());
 
-  // ============================
-  // 👇 Cấu hình tại đây
-  // ============================
-  const correctDOB = "1986-06-06"; // 👉 thay bằng ngày sinh thật (YYYY-MM-DD)
+// ============================
+// 👇 Cấu hình người dùng (mã hóa SHA-256 của tên + ngày sinh)
+// ============================
+// Mã băm SHA-256 cho "thai1986-06-06" và "duy1995-02-07"
+const allowedUsers = [
+  "a4588ffb9e678af7406041dcbe3dbfdc51a7796f9243d0ce3021a8f44296ce60", // Thái
+  "2e69eaf3b2c7b8fcbb6b5e5b7f2ebf1a501c284a40b17b8825bfbf5e31edc3c5"  // Duy
+];
 
-  // Các album, mỗi mục gồm tiêu đề + danh sách URL ảnh Cloudinary
-  const albums = [
-    {
-      title: "🇹🇭 Du lịch",
-      photos: [
-        "https://res.cloudinary.com/demo/image/upload/v1691234567/sample.jpg",
-        "https://res.cloudinary.com/demo/image/upload/v1691234567/beautiful_beach.jpg",
-        "https://res.cloudinary.com/demo/image/upload/v1691234567/thailand_city.jpg"
-      ]
-    },
-    {
-      title: "🇻🇳 Sài Gòn",
-      photos: [
-        "https://res.cloudinary.com/demo/image/upload/v1691234567/saigon1.jpg",
-        "https://res.cloudinary.com/demo/image/upload/v1691234567/saigon2.jpg",
-        "https://res.cloudinary.com/demo/image/upload/v1691234567/saigon3.jpg"
-      ]
-    },
-    {
-      title: "🏞️ Đà Lạt",
-      photos: [
-        "https://res.cloudinary.com/demo/image/upload/v1691234567/dalat1.jpg",
-        "https://res.cloudinary.com/demo/image/upload/v1691234567/dalat2.jpg"
-      ]
-    }
-  ];
+// ============================
+// 👇 Album ảnh mẫu (Cloudinary)
+// ============================
+const albums = [
+  {
+    title: "🇹🇭 Du lịch Thái",
+    photos: [
+      "https://res.cloudinary.com/demo/image/upload/v1691234567/sample.jpg",
+      "https://res.cloudinary.com/demo/image/upload/v1691234567/beautiful_beach.jpg",
+      "https://res.cloudinary.com/demo/image/upload/v1691234567/thailand_city.jpg"
+    ]
+  },
+  {
+    title: "🇻🇳 Sài Gòn",
+    photos: [
+      "https://res.cloudinary.com/demo/image/upload/v1691234567/saigon1.jpg",
+      "https://res.cloudinary.com/demo/image/upload/v1691234567/saigon2.jpg",
+      "https://res.cloudinary.com/demo/image/upload/v1691234567/saigon3.jpg"
+    ]
+  },
+  {
+    title: "🏞️ Đà Lạt",
+    photos: [
+      "https://res.cloudinary.com/demo/image/upload/v1691234567/dalat1.jpg",
+      "https://res.cloudinary.com/demo/image/upload/v1691234567/dalat2.jpg"
+    ]
+  }
+];
 
-  // ============================
-  // 👇 Hàm xử lý
-  // ============================
-  function checkDOB() {
-    const dob = document.getElementById("dob").value;
+// ============================
+// 👇 Hàm xử lý đăng nhập
+// ============================
+async function checkDOB() {
+  const dob = document.getElementById("dob").value;
+  const names = ["thai", "duy"];
 
-    if (dob === correctDOB) {
-      document.getElementById("gallery").style.display = "block";
-      renderAlbums();
-    } else {
-      alert("❌ Ngày sinh không đúng!");
+  let access = false;
+  for (let name of names) {
+    const encoded = await hashData(name + dob);
+    if (allowedUsers.includes(encoded)) {
+      access = true;
+      break;
     }
   }
 
-  function renderAlbums() {
-    const container = document.getElementById("gallery");
-    container.innerHTML = ""; // Xóa trước khi render
+  if (access) {
+    document.getElementById("gallery").style.display = "block";
+    renderAlbums();
+  } else {
+    alert("❌ Ngày sinh không đúng!");
+  }
+}
 
-    albums.forEach(album => {
-      const section = document.createElement("div");
-      section.className = "album";
+// ============================
+// 👇 Tạo mã SHA-256
+// ============================
+async function hashData(str) {
+  const buffer = new TextEncoder().encode(str);
+  const hash = await crypto.subtle.digest("SHA-256", buffer);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
 
-      const title = document.createElement("h3");
-      title.textContent = album.title;
+// ============================
+// 👇 Render album
+// ============================
+function renderAlbums() {
+  const container = document.getElementById("gallery");
+  container.innerHTML = "";
 
-      const grid = document.createElement("div");
-      grid.className = "photo-grid";
+  albums.forEach(album => {
+    const section = document.createElement("div");
+    section.className = "album";
 
-      album.photos.forEach(url => {
-        const img = document.createElement("img");
-        img.src = url;
-        grid.appendChild(img);
-      });
+    const title = document.createElement("h3");
+    title.textContent = album.title;
 
-      section.appendChild(title);
-      section.appendChild(grid);
-      container.appendChild(section);
+    const grid = document.createElement("div");
+    grid.className = "photo-grid";
+
+    album.photos.forEach(url => {
+      const img = document.createElement("img");
+      img.src = url;
+      grid.appendChild(img);
+      setTimeout(() => img.classList.add("visible"), 200); // hiệu ứng fade-in
     });
-  }
+
+    section.appendChild(title);
+    section.appendChild(grid);
+    container.appendChild(section);
+  });
+}
 </script>
 
 </body>
