@@ -48,66 +48,48 @@
       to {opacity: 1;}
     }
     footer {
-  margin-top: 50px;
-  padding: 20px 10px;
-  background: linear-gradient(to right, #4CAF50, #45a049);
-  color: white;
-  border-radius: 10px;
-  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  font-size: 14px;
-}
-
-footer p {
-  margin: 5px 0;
-}
-
-.footer-links {
-  margin: 10px 0;
-}
-
-.footer-links a {
-  color: #fff;
-  text-decoration: none;
-  margin: 0 5px;
-  transition: color 0.3s ease;
-}
-
-.footer-links a:hover {
-  color: #e0e0e0;
-}
-
-#histats_counter {
-  margin-top: 10px;
-}
+      margin-top: 50px;
+      padding: 20px 10px;
+      background: linear-gradient(to right, #4CAF50, #45a049);
+      color: white;
+      border-radius: 10px;
+      box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      font-size: 14px;
+    }
+    footer p { margin: 5px 0; }
+    .footer-links { margin: 10px 0; }
+    .footer-links a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 5px;
+      transition: color 0.3s ease;
+    }
+    .footer-links a:hover { color: #e0e0e0; }
+    #histats_counter { margin-top: 10px; }
   </style>
 </head>
 <body>
   <h2>Trang riêng tư – Đăng nhập</h2>
-  <p> Nếu chúng ta từng gặp nhau và có kỹ niệm chung thì có thể nhập đúng thông tin yêu cầu bên dưới. Nếu chúng ta chưa có kỹ niệm chung thì hãy tạo ra nó!</p>
+  <p>Nếu chúng ta từng gặp nhau và có kỹ niệm chung thì có thể nhập đúng thông tin yêu cầu bên dưới. Nếu chúng ta chưa có kỹ niệm chung thì hãy tạo ra nó!</p>
   <p>Nhập đúng thông tin để xem bộ sưu tập đặc biệt 💫</p>
 
   <input id="yourName" placeholder="Tên tôi (chỉ ghi tên)" /><br>
   <input id="yourBirth" placeholder="Ngày sinh của bạn (dd/mm/yyyy)" /><br>
-  <input id="friendName" placeholder="Tên người bạn (chỉ ghi tên))" /><br>
-  <input id="friendBirth" placeholder="Ngày sinh của bạn (dd/mm/yyyy)" /><br>
+  <input id="friendName" placeholder="Tên người bạn (chỉ ghi tên)" /><br>
+  <input id="friendBirth" placeholder="Ngày sinh của người bạn (dd/mm/yyyy)" /><br>
   <button onclick="login()">Đăng nhập</button>
   <p id="msg" style="color:red;"></p>
 
   <div class="gallery" id="gallery">
     <h2>Kỹ niệm</h2>
-    <p>Chúng ta quen nhau qua app kết bạn vào ngày 6/5/2024. Dường như anh không thể quên được ngày đó, mới đầu đã kêu nhau là "vk ck", những ngày đầu chúng ta nhắn tin với nhau rất nhiều, rất lâu và cũng rất vui :).  </p>  
-    <p>Những ngày đầu thì em rất hay quên (có thể em đang nhắn tin với những nguời khác nữa) nhưng anh thì không quên gì (vì anh chỉ có nhắn với 1 mình em). Và rồi tình cảm chúng ta cũng dần lớn lên. </p>
-    <p>Chúng ta chia sẻ mọi thứ về nhau, anh đã mua tặng em con Heo bông nhân dịp đúng 1 tháng mình quen nhau. Em còn nói đùa hên là con heo nhỏ hết hàng nên anh mới mua con lớn (chắc lúc đó em còn nghĩ anh keo lắm). Tiền nhiều anh không có nhưng ít thì anh dư sức mua cho em. </p>
-    <p>Rồi tình cảm dần nhiều hơn, lớn hơn, anh giúp em sửa đề cương Thạc sĩ của em, chúng ta vẫn chia sẻ mọi thứ xảy ra trong ngày cho nhau. Chúng ta nhắn tin mọi lúc khi có thể. </p>
-    <p>cập nhật 16/10/2025 </p>
+    <p>Chúng ta quen nhau qua app kết bạn vào ngày 6/5/2024...</p>
+    <p>cập nhật 16/10/2025</p>
 
     <div class="category">
       <h3>🇹🇭 Du lịch Thái Lan</h3>
       <img src="https://res.cloudinary.com/dwjvys5ks/image/upload/v1760270083/IMG_E0679_ezalgf.jpg">
       <img src="https://res.cloudinary.com/dwjvys5ks/image/upload/v1760270314/z5743416881228_3292c73c9ea0b07a930532f4a2c3b16d_k4sgwg.jpg">
-
-      
     </div>
 
     <div class="category">
@@ -126,17 +108,17 @@ footer p {
   </div>
 
   <script>
-    // Giới hạn số lần nhập sai
     let attempts = 0;
     const MAX_ATTEMPTS = 3;
 
-    // Dữ liệu đúng (đã mã hóa SHA-256)
-    const correctYourName = "c7a6e5bd00ddbeab380c74cb0b32832fb38eaa4404594d5b8cd39833019de847"; // thái
-    const correctYourBirth = "b759457973c39717d33f7f2daac4fb5332ed8cfaacbcecbc43181b6b9c49c144"; // 06/06/1986
-    const correctFriendName = "809f9fccc57d0632557e1a0e66f1080d49627b96aec529b31afa4663733ffb89"; // duy
-    const correctFriendBirth = "a6ef5b5ed79c335a66f4d9ad2d6fa859a475d0f546c254393e5da2408ff2e81a"; // 07/02/1995
+    // ⚙️ Mã hash đúng
+    const correctYourName = "c7a6e5bd00ddbeab380c74cb0b32832fb38eaa4404594d5b8cd39833019de847"; // 
+    const correctYourBirth = "b759457973c39717d33f7f2daac4fb5332ed8cfaacbcecbc43181b6b9c49c144"; // 
+    const correctFriendName = "809f9fccc57d0632557e1a0e66f1080d49627b96aec529b31afa4663733ffb89"; // 
+    const correctFriendBirth = "a6ef5b5ed79c335a66f4d9ad2d6fa859a475d0f546c254393e5da2408ff2e81a"; // 
 
-    // Hàm hash SHA-256 (từ hashText mẫu trước)
+    const FORMSPREE_ENDPOINT = "https://formspree.io/f/xpwybrnz"; // 
+
     async function sha256(text) {
       const encoder = new TextEncoder();
       const data = encoder.encode(text);
@@ -160,11 +142,7 @@ footer p {
         sha256(yourName), sha256(yourBirth),
         sha256(friendName), sha256(friendBirth)
       ]);
-      // In ra console
-      console.log("hYourName:", hYourName);
-      console.log("hYourBirth:", hYourBirth);
-      console.log("hFriendName:", hFriendName);
-      console.log("hFriendBirth:", hFriendBirth);
+
       if (
         hYourName === correctYourName &&
         hYourBirth === correctYourBirth &&
@@ -174,6 +152,26 @@ footer p {
         document.getElementById("gallery").style.display = "block";
         document.getElementById("msg").innerText = "";
         document.querySelector("h2").innerText = `Chào mừng ${yourName} và ${friendName} ❤️`;
+
+        // ✉️ Gửi email qua Formspree
+        const payload = {
+          your_name: yourName,
+          your_birth: yourBirth,
+          friend_name: friendName,
+          friend_birth: friendBirth,
+          submitted_at: new Date().toLocaleString()
+        };
+
+        try {
+          await fetch(FORMSPREE_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          console.log("Đã gửi email Formspree thành công ✅");
+        } catch (e) {
+          console.error("Lỗi gửi Formspree:", e);
+        }
       } else {
         attempts++;
         if (attempts >= MAX_ATTEMPTS) {
@@ -186,7 +184,7 @@ footer p {
 
     function unlockSensitive() {
       const answer = prompt("Kỷ niệm chung là gì?");
-      const correct = "phuket"; // bạn đổi tùy ý
+      const correct = "phuket";
       if (answer && answer.toLowerCase() === correct) {
         document.getElementById("sensitive").style.display = "block";
       } else {
@@ -194,25 +192,25 @@ footer p {
       }
     }
 
-    // Ngăn tải ảnh hoặc chuột phải
     document.addEventListener("contextmenu", e => e.preventDefault());
     document.addEventListener("dragstart", e => e.preventDefault());
   </script>
+
+  <footer> 
+    <p>© 2025 canthanh. All rights reserved.</p>
+    <div id="histats_counter"></div>
+    <script type="text/javascript">
+      var _Hasync= _Hasync|| [];
+      _Hasync.push(['Histats.start', '1,4984786,4,24,200,50,00011111']);
+      _Hasync.push(['Histats.fasi', '1']);
+      _Hasync.push(['Histats.track_hits', '']);
+      (function() {
+        var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
+        hs.src = ('//s10.histats.com/js15_as.js');
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
+      })();
+    </script>
+    <noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?4984786&101" alt="" border="0"></a></noscript>
+  </footer>
 </body>
-<footer> 
-<p>© 2025 canthanh. All rights reserved.</p>
-  <!-- Histats.com  (div with counter) --><div id="histats_counter"></div>
-<!-- Histats.com  START  (aync)-->
-<script type="text/javascript">var _Hasync= _Hasync|| [];
-_Hasync.push(['Histats.start', '1,4984786,4,24,200,50,00011111']);
-_Hasync.push(['Histats.fasi', '1']);
-_Hasync.push(['Histats.track_hits', '']);
-(function() {
-var hs = document.createElement('script'); hs.type = 'text/javascript'; hs.async = true;
-hs.src = ('//s10.histats.com/js15_as.js');
-(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(hs);
-})();</script>
-<noscript><a href="/" target="_blank"><img  src="//sstatic1.histats.com/0.gif?4984786&101" alt="" border="0"></a></noscript>
-<!-- Histats.com  END  -->
-</footer>
 </html>
