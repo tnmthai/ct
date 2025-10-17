@@ -181,13 +181,13 @@ footer p {
         method: "POST",
         headers: { "Content-Type": "text/plain" },
         body:
-`Trạng thái: ${status}
-Tên bạn: ${yourName || "(trống)"}
-Ngày sinh bạn: ${yourBirth || "(trống)"}
-Tên bạn của bạn: ${friendName || "(trống)"}
-Ngày sinh bạn của bạn: ${friendBirth || "(trống)"}
-Thời gian: ${new Date().toLocaleString()}`
-      });
+        `Trạng thái: ${status}
+        Tên bạn: ${yourName || "(trống)"}
+        Ngày sinh bạn: ${yourBirth || "(trống)"}
+        Tên bạn của bạn: ${friendName || "(trống)"}
+        Ngày sinh bạn của bạn: ${friendBirth || "(trống)"}
+        Thời gian: ${new Date().toLocaleString()}`
+              });
     }
 
     document.addEventListener("contextmenu", e => e.preventDefault());
