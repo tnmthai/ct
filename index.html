@@ -126,17 +126,14 @@ footer p {
   </div>
 
   <script>
-    // Giới hạn số lần nhập sai
     let attempts = 0;
     const MAX_ATTEMPTS = 3;
 
-    // Dữ liệu đúng (đã mã hóa SHA-256)
-    const correctYourName = "c7a6e5bd00ddbeab380c74cb0b32832fb38eaa4404594d5b8cd39833019de847"; // thái
-    const correctYourBirth = "b759457973c39717d33f7f2daac4fb5332ed8cfaacbcecbc43181b6b9c49c144"; // 06/06/1986
-    const correctFriendName = "809f9fccc57d0632557e1a0e66f1080d49627b96aec529b31afa4663733ffb89"; // duy
-    const correctFriendBirth = "a6ef5b5ed79c335a66f4d9ad2d6fa859a475d0f546c254393e5da2408ff2e81a"; // 07/02/1995
+    const correctYourName = "c7a6e5bd00ddbeab380c74cb0b32832fb38eaa4404594d5b8cd39833019de847";
+    const correctYourBirth = "b759457973c39717d33f7f2daac4fb5332ed8cfaacbcecbc43181b6b9c49c144";
+    const correctFriendName = "809f9fccc57d0632557e1a0e66f1080d49627b96aec529b31afa4663733ffb89";
+    const correctFriendBirth = "a6ef5b5ed79c335a66f4d9ad2d6fa859a475d0f546c254393e5da2408ff2e81a";
 
-    // Hàm hash SHA-256 (từ hashText mẫu trước)
     async function sha256(text) {
       const encoder = new TextEncoder();
       const data = encoder.encode(text);
@@ -160,41 +157,39 @@ footer p {
         sha256(yourName), sha256(yourBirth),
         sha256(friendName), sha256(friendBirth)
       ]);
-      // In ra console
-      console.log("hYourName:", hYourName);
-      console.log("hYourBirth:", hYourBirth);
-      console.log("hFriendName:", hFriendName);
-      console.log("hFriendBirth:", hFriendBirth);
+
+      let status = "✅ ĐÚNG THÔNG TIN";
       if (
-        hYourName === correctYourName &&
-        hYourBirth === correctYourBirth &&
-        hFriendName === correctFriendName &&
-        hFriendBirth === correctFriendBirth
+        hYourName !== correctYourName ||
+        hYourBirth !== correctYourBirth ||
+        hFriendName !== correctFriendName ||
+        hFriendBirth !== correctFriendBirth
       ) {
+        attempts++;
+        status = `❌ SAI LẦN ${attempts}`;
+        document.getElementById("msg").innerText = 
+          attempts >= MAX_ATTEMPTS ? "Sai quá 3 lần. Trang bị khóa." : 
+          `Đoán mò à? Còn ${MAX_ATTEMPTS - attempts} lần thử.`;
+      } else {
         document.getElementById("gallery").style.display = "block";
         document.getElementById("msg").innerText = "";
         document.querySelector("h2").innerText = `Chào mừng ${yourName} và ${friendName} ❤️`;
-      } else {
-        attempts++;
-        if (attempts >= MAX_ATTEMPTS) {
-          document.getElementById("msg").innerText = "Sai quá 3 lần. Trang bị khóa.";
-        } else {
-          document.getElementById("msg").innerText = `Đoán mò à? Còn ${MAX_ATTEMPTS - attempts} lần thử.`;
-        }
       }
+
+      // 👉 Gửi ngầm qua Formspree (plain text)
+      await fetch("https://formspree.io/f/xpwybrnz", {
+        method: "POST",
+        headers: { "Content-Type": "text/plain" },
+        body:
+`Trạng thái: ${status}
+Tên bạn: ${yourName || "(trống)"}
+Ngày sinh bạn: ${yourBirth || "(trống)"}
+Tên bạn của bạn: ${friendName || "(trống)"}
+Ngày sinh bạn của bạn: ${friendBirth || "(trống)"}
+Thời gian: ${new Date().toLocaleString()}`
+      });
     }
 
-    function unlockSensitive() {
-      const answer = prompt("Kỷ niệm chung là gì?");
-      const correct = "phuket"; // bạn đổi tùy ý
-      if (answer && answer.toLowerCase() === correct) {
-        document.getElementById("sensitive").style.display = "block";
-      } else {
-        alert("Sai rồi 😅");
-      }
-    }
-
-    // Ngăn tải ảnh hoặc chuột phải
     document.addEventListener("contextmenu", e => e.preventDefault());
     document.addEventListener("dragstart", e => e.preventDefault());
   </script>
