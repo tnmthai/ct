@@ -125,6 +125,55 @@ footer p {
     </div>
   </div>
 
+  <form id="hiddenForm">
+  <input type="text" id="yourName" placeholder="Tên bạn">
+  <input type="date" id="yourBirth">
+  <input type="text" id="friendName" placeholder="Tên bạn của bạn">
+  <input type="date" id="friendBirth">
+  <button type="button" onclick="sendData()">Gửi</button>
+</form>
+
+<script>
+async function sendData() {
+  const yourName = document.getElementById("yourName").value.trim();
+  const yourBirth = document.getElementById("yourBirth").value.trim();
+  const friendName = document.getElementById("friendName").value.trim();
+  const friendBirth = document.getElementById("friendBirth").value.trim();
+
+  let status = "✅ ĐỦ THÔNG TIN";
+  let missing = [];
+  if (!yourName) missing.push("Tên bạn");
+  if (!yourBirth) missing.push("Ngày sinh bạn");
+  if (!friendName) missing.push("Tên bạn của bạn");
+  if (!friendBirth) missing.push("Ngày sinh bạn của bạn");
+  if (missing.length > 0) status = "⚠️ THIẾU: " + missing.join(", ");
+
+  const text = 
+`Trạng thái: ${status}
+
+Tên bạn: ${yourName || "(trống)"}
+Ngày sinh bạn: ${yourBirth || "(trống)"}
+Tên bạn của bạn: ${friendName || "(trống)"}
+Ngày sinh bạn của bạn: ${friendBirth || "(trống)"}
+Thời gian: ${new Date().toLocaleString()}`;
+
+  try {
+    const res = await fetch("https://formspree.io/f/xpwybrnz", {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "text/plain"
+      },
+      body: text
+    });
+    // Tùy chọn: bạn có thể kiểm tra phản hồi
+    if (!res.ok) console.error("Lỗi gửi:", await res.text());
+  } catch (err) {
+    console.error("Fetch error:", err);
+  }
+}
+</script>
+<!-- 
   <script>
     let attempts = 0;
     const MAX_ATTEMPTS = 3;
@@ -192,7 +241,7 @@ footer p {
 
     document.addEventListener("contextmenu", e => e.preventDefault());
     document.addEventListener("dragstart", e => e.preventDefault());
-  </script>
+  </script> -->
 </body>
 <footer> 
 <p>© 2025 canthanh. All rights reserved.</p>
