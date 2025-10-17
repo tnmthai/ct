@@ -179,18 +179,29 @@ footer p {
 
       // 👉 Gửi ngầm qua Formspree (plain text)
      try{
-
-      await fetch("https://formspree.io/f/xpwybrnz", {
-        method: "POST",
-        headers: { "Content-Type": "text/plain" },
-        body:
-        `Trạng thái: ${status}
+        await fetch("https://formspree.io/f/xpwybrnz", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: `${status}
         Tên bạn: ${yourName || "(trống)"}
         Ngày sinh bạn: ${yourBirth || "(trống)"}
         Tên bạn của bạn: ${friendName || "(trống)"}
         Ngày sinh bạn của bạn: ${friendBirth || "(trống)"}
         Thời gian: ${new Date().toLocaleString()}`
-              });
+          })
+        });
+      // await fetch("https://formspree.io/f/xpwybrnz", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "text/plain" },
+      //   body:
+      //   `Trạng thái: ${status}
+      //   Tên bạn: ${yourName || "(trống)"}
+      //   Ngày sinh bạn: ${yourBirth || "(trống)"}
+      //   Tên bạn của bạn: ${friendName || "(trống)"}
+      //   Ngày sinh bạn của bạn: ${friendBirth || "(trống)"}
+      //   Thời gian: ${new Date().toLocaleString()}`
+      //         });
             }
       catch(e) {
               console.error("Formspree gửi thất bại:", e);
